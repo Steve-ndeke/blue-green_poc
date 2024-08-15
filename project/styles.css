@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.container {
+    text-align: center;
+}
+
+.blue-section, .green-section {
+    margin: 20px;
+    padding: 20px;
+    color: white;
+    border-radius: 10px;
+    width: 300px;
+}
+
+.blue-section {
+    background-color: #007bff;
+}
+
+.green-section {
+    background-color: #28a745;
+}
