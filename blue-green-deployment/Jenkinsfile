@@ -1,0 +1,43 @@
+namespace: blue-green
+pipeline {
+    agent any
+    environment {
+        GITHUB_TOKEN = credentials('github-pat')
+        K8S_NAMESPACE = 'blue-green'
+    }
+
+    parameters {
+        // Define parameters for the build
+        string(name: 'IMAGE_TAG', defaultValue: 'latest', description: 'Tag of the Docker image to deploy')
+    }
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git url: 'https://github.com/Steve-ndeke/blue-green_poc/tree/main/blue-green-deployment', credentialsId: 'github-pat'
+            }
+        } 
+
+    }
+
+        stage('Helm Upgrade or Install') {
+            steps {
+                script {
+                    helmUpgradeOrInstall()
+                }
+            }
+    }
+
+}
+
+
+def helmUpgradeOrInstall() {
+    def deploymentExists = sh(script: "helm list -n ${env.K8S_NAMESPACE} | grep ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
+
+    if (deploymentExists) {
+        echo "Deployment exists. Upgrading..."
+        sh "helm upgrade ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE}"
+    } else {
+        echo "Deployment does not exist. Installing..."
+        sh "helm install ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE} --create-namespace"
+    }
+}
