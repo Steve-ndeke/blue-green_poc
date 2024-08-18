@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.blueDeployment.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.blueDeployment.labels.app }}
+    version: {{ .Values.blueDeployment.labels.version }}
+spec:
+  replicas: {{ .Values.replicaCount | int}}
+  selector:
+    matchLabels:
+      app: {{ .Values.blueDeployment.labels.app }}
+      version: {{ .Values.blueDeployment.labels.version }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.blueDeployment.labels.app }}
+        version: {{ .Values.blueDeployment.labels.version }}
+    spec:
+      containers:
+      - name: {{ .Values.blueDeployment.container.name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tagBlue }}"
+        ports:
+        - containerPort: {{ .Values.blueDeployment.container.port }}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.greenDeployment.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.greenDeployment.labels.app }}
+    version: {{ .Values.greenDeployment.labels.version }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.greenDeployment.labels.app }}
+      version: {{ .Values.greenDeployment.labels.version }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.greenDeployment.labels.app }}
+        version: {{ .Values.greenDeployment.labels.version }}
+    spec:
+      containers:
+      - name: {{ .Values.greenDeployment.container.name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tagGreen }}"
+        ports:
+        - containerPort: {{ .Values.greenDeployment.container.port }}

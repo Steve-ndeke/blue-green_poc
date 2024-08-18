@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blue-service
+  namespace: blue-green
+  labels:
+    app: blue-green-poc
+    version: blue
+spec:
+  selector:
+    app: blue-green-poc
+    version: blue
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: NodePort
+
+  

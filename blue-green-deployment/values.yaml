@@ -1,0 +1,46 @@
+
+namespace: blue-green
+
+ingress:
+  name: blue-green-ingress
+  host: stv.local
+
+replicaCount: 1
+
+image:
+  repository: stevendeke/bluegreen
+  tagBlue: "1.0.0"
+  tagGreen: "1.0.1"
+  pullPolicy: IfNotPresent
+
+
+blueDeployment:
+  name: blue-deployment
+  labels:
+    app: blue-green-poc
+    version: blue
+  container:
+    name: my-webserver
+    port: 80
+
+greenDeployment:
+  name: green-deployment
+  labels:
+    app: blue-green-poc
+    version: green
+  container:
+    name: my-webserver
+    port: 80
+
+service:
+  name: blue-service
+  labels:
+    app: blue-green-poc
+    version: green
+  selector:
+    app: blue-green-poc
+    version: green
+  port: 80
+  targetPort: 80
+  type: NodePort
+
