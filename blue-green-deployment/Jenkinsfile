@@ -2,7 +2,7 @@
 pipeline {
     agent any
     environment {
-        GITHUB_TOKEN = credentials('github-pat')
+        // GITHUB_TOKEN = credentials('PAT-jenkins')
         K8S_NAMESPACE = 'blue-green'
     }
 
