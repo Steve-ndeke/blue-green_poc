@@ -16,7 +16,6 @@ pipeline {
                 git branch: 'main', credentialsId: 'PAT-jenkins', url: 'https://github.com/Steve-ndeke/blue-green_poc'
             }
         }
-
         stage('Check and Install kubectl') {
             steps {
                 script {
@@ -26,18 +25,19 @@ pipeline {
                         echo "kubectl is already installed."
                     } else {
                         echo "kubectl not found. Installing..."
-                        sh """
+                        sh '''
                         mkdir -p ${KUBECTL_INSTALL_DIR}
                         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
                         chmod +x kubectl
                         mv kubectl ${KUBECTL_INSTALL_DIR}/kubectl
-                        export PATH=${KUBECTL_INSTALL_DIR}:\$PATH
-                        """
+                        export PATH=${KUBECTL_INSTALL_DIR}:$PATH
+                        '''
                         echo "kubectl installed successfully."
                     }
                 }
             }
         }
+
 
         stage('Test Kubernetes Access') {
             steps {
