@@ -6,6 +6,9 @@ pipeline {
         K8S_NAMESPACE = 'blue-green'
         HELM_RELEASE_NAME= 'blue-green-deployment'
         CHART_PATH= '/blue-green-deployment/'
+        HELM_VERSION = 'v3.15.4'
+        HELM_INSTALL_DIR = "${env.WORKSPACE}/helm"
+        PATH = "${HELM_INSTALL_DIR}:${env.PATH}" // Add Helm to the PATH
     }
 
     // parameters {
@@ -19,7 +22,8 @@ pipeline {
             }
         }
 
-                stage('Install Helm') {
+    stages {
+        stage('Install Helm') {
             steps {
                 script {
                     // Check if Helm is installed
@@ -29,7 +33,12 @@ pipeline {
                         echo "Helm is already installed."
                     } else {
                         echo "Helm is not installed. Installing Helm..."
-                        sh 'curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash'
+                        sh """
+                        mkdir -p ${HELM_INSTALL_DIR}
+                        curl -L https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
+                        tar -xvzf helm.tar.gz --strip-components=1 -C ${HELM_INSTALL_DIR} linux-amd64/helm
+                        rm helm.tar.gz
+                        """
                     }
                 }
             }
@@ -60,4 +69,6 @@ def helmUpgradeOrInstall() {
         echo "Deployment does not exist. Installing..."
         sh "helm install ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE} --create-namespace"
     }
+}
+
 }
