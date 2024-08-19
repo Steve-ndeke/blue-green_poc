@@ -1,4 +1,4 @@
-namespace: blue-green
+
 pipeline {
     agent any
     environment {
@@ -6,10 +6,10 @@ pipeline {
         K8S_NAMESPACE = 'blue-green'
     }
 
-    parameters {
-        // Define parameters for the build
-        string(name: 'IMAGE_TAG', defaultValue: 'latest', description: 'Tag of the Docker image to deploy')
-    }
+    // parameters {
+    //     // Define parameters for the build
+    //     string(name: 'IMAGE_TAG', defaultValue: 'latest', description: 'Tag of the Docker image to deploy')
+    // }
     stages {
         stage('Clone Repository') {
             steps {
