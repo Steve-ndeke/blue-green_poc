@@ -4,6 +4,7 @@ pipeline {
     environment {
         GITHUB_TOKEN = credentials('PAT-jenkins')
         K8S_NAMESPACE = 'blue-green'
+        HELM_RELEASE_NAME= 'blue-green-deployment'
     }
 
     // parameters {
