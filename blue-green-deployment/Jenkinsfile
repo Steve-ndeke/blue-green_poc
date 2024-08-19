@@ -16,13 +16,13 @@ pipeline {
             }
         }
 
-        // stage('Configure Kubernetes') {
-        //     steps {
-        //         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-        //             sh 'kubectl config view'
-        //         }
-        //     }
-        // }
+        stage('Test Kubernetes Access') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh 'kubectl get nodes'
+                }
+            }
+        }
 
         stage('Install Helm') {
             steps {
