@@ -4,7 +4,7 @@ pipeline {
         GITHUB_TOKEN = credentials('PAT-jenkins')
         K8S_NAMESPACE = 'blue-green'
         HELM_RELEASE_NAME = 'blue-green-deployment'
-        CHART_PATH = '/blue-green-deployment/'
+        CHART_PATH = './blue-green-deployment/'
         HELM_VERSION = 'v3.15.4'
         HELM_INSTALL_DIR = "${env.WORKSPACE}/helm"
         PATH = "${HELM_INSTALL_DIR}:${env.PATH}" 
