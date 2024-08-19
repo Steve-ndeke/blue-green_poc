@@ -1,20 +1,14 @@
-
 pipeline {
     agent any
     environment {
         GITHUB_TOKEN = credentials('PAT-jenkins')
         K8S_NAMESPACE = 'blue-green'
-        HELM_RELEASE_NAME= 'blue-green-deployment'
-        CHART_PATH= '/blue-green-deployment/'
+        HELM_RELEASE_NAME = 'blue-green-deployment'
+        CHART_PATH = '/blue-green-deployment/'
         HELM_VERSION = 'v3.15.4'
         HELM_INSTALL_DIR = "${env.WORKSPACE}/helm"
-        PATH = "${HELM_INSTALL_DIR}:${env.PATH}" // Add Helm to the PATH
+        PATH = "${HELM_INSTALL_DIR}:${env.PATH}" 
     }
-
-    // parameters {
-    //     // Define parameters for the build
-    //     string(name: 'IMAGE_TAG', defaultValue: 'latest', description: 'Tag of the Docker image to deploy')
-    // }
     stages {
         stage('Clone Repository') {
             steps {
@@ -22,7 +16,6 @@ pipeline {
             }
         }
 
-    stages {
         stage('Install Helm') {
             steps {
                 script {
@@ -50,15 +43,11 @@ pipeline {
                     helmUpgradeOrInstall()
                 }
             }
+        }
     }
-
-    }
-
-
-
 }
 
-
+// Function definition outside the pipeline block
 def helmUpgradeOrInstall() {
     def deploymentExists = sh(script: "helm list -n ${env.K8S_NAMESPACE} | grep ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
 
@@ -69,6 +58,4 @@ def helmUpgradeOrInstall() {
         echo "Deployment does not exist. Installing..."
         sh "helm install ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE} --create-namespace"
     }
-}
-
 }
