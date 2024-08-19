@@ -16,6 +16,14 @@ pipeline {
             }
         }
 
+        stage('Configure Kubernetes') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh 'kubectl config view'
+                }
+            }
+        }
+
         stage('Install Helm') {
             steps {
                 script {
