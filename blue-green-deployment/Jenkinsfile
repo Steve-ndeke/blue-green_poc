@@ -19,6 +19,22 @@ pipeline {
             }
         }
 
+                stage('Install Helm') {
+            steps {
+                script {
+                    // Check if Helm is installed
+                    def helmExists = sh(script: 'which helm', returnStatus: true) == 0
+
+                    if (helmExists) {
+                        echo "Helm is already installed."
+                    } else {
+                        echo "Helm is not installed. Installing Helm..."
+                        sh 'curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash'
+                    }
+                }
+            }
+        }
+
         stage('Helm Upgrade or Install') {
             steps {
                 script {
