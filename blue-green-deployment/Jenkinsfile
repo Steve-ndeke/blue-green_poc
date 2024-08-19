@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/Steve-ndeke/blue-green_poc/tree/main/blue-green-deployment', credentialsId: 'PAT-jenkins'
+                git url: 'https://github.com/Steve-ndeke/blue-green_poc.git', credentialsId: 'PAT-jenkins'
             }
         }
 
