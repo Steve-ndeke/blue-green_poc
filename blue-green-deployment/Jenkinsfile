@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        GITHUB_TOKEN = credentials('PAT-jenkins')
-        K8S_NAMESPACE = 'blue-green'
+        GITHUB_TOKEN = credentials('PAT')
+        K8S_NAMESPACE = 'green'
         HELM_RELEASE_NAME = 'blue-green-deployment'
         CHART_PATH = './blue-green-deployment/'
         HELM_VERSION = 'v3.15.4'
