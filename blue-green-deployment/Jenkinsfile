@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/Steve-ndeke/blue-green_poc'
+                git branch: 'main', url: 'https://github.com/Steve-ndeke/blue-green_poc.git'
             }
         }
         stage('Check and Install kubectl') {
