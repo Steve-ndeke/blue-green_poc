@@ -11,11 +11,11 @@ pipeline {
         KUBECTL_INSTALL_DIR = "$HOME/bin"
     }
     stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', url: 'https://github.com/Steve-ndeke/blue-green_poc.git'
-            }
-        }
+//         stage('Clone Repository') {
+//             steps {
+//                 git branch: 'main', url: 'https://github.com/Steve-ndeke/blue-green_poc.git'
+//             }
+//         }
         stage('Check and Install kubectl') {
             steps {
                 script {
