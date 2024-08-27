@@ -25,11 +25,10 @@ pipeline {
                     } else {
                         echo "kubectl not found. Installing..."
                         bat '''
-                        mkdir -p ${KUBECTL_INSTALL_DIR}
-                        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-                        chmod +x kubectl
-                        move kubectl ${KUBECTL_INSTALL_DIR}/kubectl
-                        set PATH=${KUBECTL_INSTALL_DIR}:$PATH
+                        mkdir %KUBECTL_INSTALL_DIR%
+                        curl -LO "https://dl.k8s.io/release/%cd%/kubectl.exe"
+                        move kubectl.exe %KUBECTL_INSTALL_DIR%\\kubectl.exe
+                        set PATH=%KUBECTL_INSTALL_DIR%;%PATH%
                         '''
                         echo "kubectl installed successfully."
                     }
