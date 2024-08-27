@@ -1,5 +1,5 @@
 
-namespace: blue-green
+namespace: green
 
 ingress:
   name: blue-green-ingress
