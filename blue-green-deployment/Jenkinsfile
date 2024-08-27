@@ -6,7 +6,7 @@ pipeline {
         CHART_PATH = './blue-green-deployment/'
         HELM_VERSION = 'v3.15.4'
         HELM_INSTALL_DIR = "${env.WORKSPACE}/helm"
-        PATH = "${HELM_INSTALL_DIR}:${env.PATH}" 
+        PATH = "${HELM_INSTALL_DIR}:${env.PATH}"
         KUBECTL_INSTALL_DIR = "$HOME/bin"
     }
     stages {
@@ -37,13 +37,13 @@ pipeline {
 //         }
 
 
-//         stage('Test Kubernetes Access') {
-//             steps {
-//                 withCredentials([file(credentialsId: 'kubernetes_config', variable: 'KUBECONFIG')]) {
-//                     bat 'helm list'
-//                 }
-//             }
-//         }
+        stage('Test Kubernetes Access') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    bat 'helm list'
+                }
+            }
+        }
 
         stage('Install Helm') {
             steps {
