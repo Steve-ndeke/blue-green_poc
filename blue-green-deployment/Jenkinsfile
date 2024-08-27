@@ -28,8 +28,8 @@ pipeline {
                         mkdir -p ${KUBECTL_INSTALL_DIR}
                         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
                         chmod +x kubectl
-                        mv kubectl ${KUBECTL_INSTALL_DIR}/kubectl
-                        export PATH=${KUBECTL_INSTALL_DIR}:$PATH
+                        move kubectl ${KUBECTL_INSTALL_DIR}/kubectl
+                        set PATH=${KUBECTL_INSTALL_DIR}:$PATH
                         '''
                         echo "kubectl installed successfully."
                     }
@@ -50,17 +50,18 @@ pipeline {
             steps {
                 script {
                     // Check if Helm is installed
-                    def helmExists = bat(script: 'which helm', returnStatus: true) == 0
+                    def helmExists = bat(script: 'where helm', returnStatus: true) == 0
 
                     if (helmExists) {
                         echo "Helm is already installed."
                     } else {
                         echo "Helm is not installed. Installing Helm..."
                         bat """
-                        mkdir -p ${HELM_INSTALL_DIR}
-                        curl -L https://get.helm.bat/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
-                        tar -xvzf helm.tar.gz --strip-components=1 -C ${HELM_INSTALL_DIR} linux-amd64/helm
-                        rm helm.tar.gz
+                        mkdir %HELM_INSTALL_DIR%
+                        curl -L https://get.helm.sh/helm-${HELM_VERSION}-windows-amd64.zip -o helm.zip
+                        powershell -command "Expand-Archive helm.zip -DestinationPath ${HELM_INSTALL_DIR}"
+                        move ${HELM_INSTALL_DIR}\\windows-amd64\\helm.exe ${HELM_INSTALL_DIR}\\helm.exe
+                        del helm.zip
                         """
                     }
                 }
@@ -79,7 +80,7 @@ pipeline {
 
 // Function definition outside the pipeline block
 def helmUpgradeOrInstall() {
-    def deploymentExists = bat(script: "helm list -n ${env.K8S_NAMESPACE} | grep ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
+    def deploymentExists = bat(script: "helm list -n ${env.K8S_NAMESPACE} | findstr  ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
 
     if (deploymentExists) {
         echo "Deployment exists. Upgrading..."
