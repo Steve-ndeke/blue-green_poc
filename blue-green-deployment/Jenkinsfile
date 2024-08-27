@@ -15,35 +15,35 @@ pipeline {
 //                 git branch: 'main', url: 'https://github.com/Steve-ndeke/blue-green_poc.git'
 //             }
 //         }
-        stage('Check and Install kubectl') {
-            steps {
-                script {
-                    def kubectlExists = bat(script: 'which kubectl', returnStatus: true) == 0
+//         stage('Check and Install kubectl') {
+//             steps {
+//                 script {
+//                     def kubectlExists = bat(script: 'which kubectl', returnStatus: true) == 0
+//
+//                     if (kubectlExists) {
+//                         echo "kubectl is already installed."
+//                     } else {
+//                         echo "kubectl not found. Installing..."
+//                         bat '''
+//                         mkdir %KUBECTL_INSTALL_DIR%
+//                         curl -LO "https://dl.k8s.io/release/%cd%/kubectl.exe"
+//                         move kubectl.exe %KUBECTL_INSTALL_DIR%\\kubectl.exe
+//                         set PATH=%KUBECTL_INSTALL_DIR%;%PATH%
+//                         '''
+//                         echo "kubectl installed successfully."
+//                     }
+//                 }
+//             }
+//         }
 
-                    if (kubectlExists) {
-                        echo "kubectl is already installed."
-                    } else {
-                        echo "kubectl not found. Installing..."
-                        bat '''
-                        mkdir %KUBECTL_INSTALL_DIR%
-                        curl -LO "https://dl.k8s.io/release/%cd%/kubectl.exe"
-                        move kubectl.exe %KUBECTL_INSTALL_DIR%\\kubectl.exe
-                        set PATH=%KUBECTL_INSTALL_DIR%;%PATH%
-                        '''
-                        echo "kubectl installed successfully."
-                    }
-                }
-            }
-        }
 
-
-        stage('Test Kubernetes Access') {
-            steps {
-                withCredentials([file(credentialsId: 'kubernetes_config', variable: 'KUBECONFIG')]) {
-                    bat 'kubectl get nodes'
-                }
-            }
-        }
+//         stage('Test Kubernetes Access') {
+//             steps {
+//                 withCredentials([file(credentialsId: 'kubernetes_config', variable: 'KUBECONFIG')]) {
+//                     bat 'helm list'
+//                 }
+//             }
+//         }
 
         stage('Install Helm') {
             steps {
