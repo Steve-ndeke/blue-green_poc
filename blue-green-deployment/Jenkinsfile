@@ -81,13 +81,16 @@ pipeline {
 
 // Function definition outside the pipeline block
 def helmUpgradeOrInstall() {
-    def deploymentExists = bat(script: "helm list -n ${env.K8S_NAMESPACE} | findstr  ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
 
-    if (deploymentExists) {
-        echo "Deployment exists. Upgrading..."
-        echo "helm upgrade ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE}"
-    } else {
-        echo "Deployment does not exist. Installing..."
-        echo "helm install ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE} --create-namespace"
-    }
+    echo (script: "helm list -n ${env.K8S_NAMESPACE} | findstr  ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
+
+//     def deploymentExists = bat(script: "helm list -n ${env.K8S_NAMESPACE} | findstr  ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
+
+//     if (deploymentExists) {
+//         echo "Deployment exists. Upgrading..."
+//         echo "helm upgrade ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE}"
+//     } else {
+//         echo "Deployment does not exist. Installing..."
+//         echo "helm install ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE} --create-namespace"
+//     }
 }
