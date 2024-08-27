@@ -3,7 +3,7 @@ pipeline {
     environment {
         K8S_NAMESPACE = 'green'
         HELM_RELEASE_NAME = 'blue-green-deployment'
-        CHART_PATH = './blue-green-deployment/'
+        CHART_PATH = './blue-green-deployment/charts'
         KUBECTL_PATH = 'C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe'
         HELM_VERSION = 'v3.15.4'
         HELM_INSTALL_DIR = "${env.WORKSPACE}/helm"
