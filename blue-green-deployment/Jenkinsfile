@@ -11,28 +11,28 @@ pipeline {
         KUBECTL_INSTALL_DIR = "$HOME/bin"
     }
     stages {
-        stage('Check and Install "%KUBECTL_PATH%"') {
+        stage('Check and Install kubectl') {
             steps {
                 script {
                     // Use 'where' instead of 'which' for Windows
-                    def kubectlExists = bat(script: 'where "%KUBECTL_PATH%"', returnStatus: true) == 0
+                    def kubectlExists = bat(script: 'where kubectl', returnStatus: true) == 0
 
                     if (kubectlExists) {
-                        echo ""%KUBECTL_PATH%" is already installed."
+                        echo "kubectl is already installed."
                     } else {
-                        echo ""%KUBECTL_PATH%" not found. Installing..."
+                        echo "kubectl not found. Installing..."
                         // Ensure the directory path is correctly specified
-                        def kubectlDir = "${env.WORKSPACE}\\"%KUBECTL_PATH%""
+                        def kubectlDir = "${env.WORKSPACE}\\kubectl"
                         bat """
                         mkdir "${kubectlDir}"
-                        curl -LO "https://dl.k8s.io/release/v1.25.0/bin/windows/amd64/"%KUBECTL_PATH%".exe"
-                        move "%KUBECTL_PATH%".exe "${kubectlDir}\\"%KUBECTL_PATH%".exe"
+                        curl -LO "https://dl.k8s.io/release/v1.25.0/bin/windows/amd64/kubectl.exe"
+                        move kubectl.exe "${kubectlDir}\\kubectl.exe"
                         """
                         // Add the directory to PATH
                         bat """
                         setx PATH "%PATH%;${kubectlDir}"
                         """
-                        echo ""%KUBECTL_PATH%" installed successfully."
+                        echo "kubectl installed successfully."
                     }
                 }
             }
