@@ -10,26 +10,27 @@ pipeline {
         KUBECTL_INSTALL_DIR = "$HOME/bin"
     }
     stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', url: 'https://github.com/Steve-ndeke/blue-green_poc.git'
-            }
-        }
         stage('Check and Install kubectl') {
             steps {
                 script {
-                    def kubectlExists = bat(script: 'which kubectl', returnStatus: true) == 0
+                    // Use 'where' instead of 'which' for Windows
+                    def kubectlExists = bat(script: 'where kubectl', returnStatus: true) == 0
 
                     if (kubectlExists) {
                         echo "kubectl is already installed."
                     } else {
                         echo "kubectl not found. Installing..."
-                        bat '''
-                        mkdir %KUBECTL_INSTALL_DIR%
-                        curl -LO "https://dl.k8s.io/release/%cd%/kubectl.exe"
-                        move kubectl.exe %KUBECTL_INSTALL_DIR%\\kubectl.exe
-                        set PATH=%KUBECTL_INSTALL_DIR%;%PATH%
-                        '''
+                        // Ensure the directory path is correctly specified
+                        def kubectlDir = "${env.WORKSPACE}\\kubectl"
+                        bat """
+                        mkdir "${kubectlDir}"
+                        curl -LO "https://dl.k8s.io/release/v1.25.0/bin/windows/amd64/kubectl.exe"
+                        move kubectl.exe "${kubectlDir}\\kubectl.exe"
+                        """
+                        // Add the directory to PATH
+                        bat """
+                        setx PATH "%PATH%;${kubectlDir}"
+                        """
                         echo "kubectl installed successfully."
                     }
                 }
