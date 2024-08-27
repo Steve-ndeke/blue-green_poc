@@ -85,9 +85,9 @@ def helmUpgradeOrInstall() {
 
     if (deploymentExists) {
         echo "Deployment exists. Upgrading..."
-        bat "helm upgrade ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE}"
+        echo "helm upgrade ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE}"
     } else {
         echo "Deployment does not exist. Installing..."
-        bat "helm install ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE} --create-namespace"
+        echo "helm install ${env.HELM_RELEASE_NAME} ${env.CHART_PATH} -n ${env.K8S_NAMESPACE} --create-namespace"
     }
 }
