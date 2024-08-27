@@ -4,6 +4,7 @@ pipeline {
         K8S_NAMESPACE = 'green'
         HELM_RELEASE_NAME = 'blue-green-deployment'
         CHART_PATH = './blue-green-deployment/'
+        KUBECTL_PATH = 'C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe'
         HELM_VERSION = 'v3.15.4'
         HELM_INSTALL_DIR = "${env.WORKSPACE}/helm"
         PATH = "${HELM_INSTALL_DIR}:${env.PATH}"
@@ -41,7 +42,7 @@ pipeline {
         stage('Test Kubernetes Access') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    bat 'kubectl get nodes'
+                    bat '"%KUBECTL_PATH%" get nodes --kubeconfig %KUBECONFIG%'
                 }
             }
         }
