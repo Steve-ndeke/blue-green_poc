@@ -82,9 +82,7 @@ pipeline {
 // Function definition outside the pipeline block
 def helmUpgradeOrInstall() {
 
-    echo (script: "helm list -n ${env.K8S_NAMESPACE} | findstr  ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
-
-//     def deploymentExists = bat(script: "helm list -n ${env.K8S_NAMESPACE} | findstr  ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
+    def deploymentExists = echo(script: "helm list -n ${env.K8S_NAMESPACE} | findstr  ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
 
 //     if (deploymentExists) {
 //         echo "Deployment exists. Upgrading..."
